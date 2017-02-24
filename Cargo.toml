@@ -1,0 +1,8 @@
+[package]
+name = "cargo-hexcat"
+version = "0.1.0"
+authors = ["Corey Farwell <coreyf@rwell.org>"]
+
+[[bin]]
+name = "hexcat"
+path = "main.rs"

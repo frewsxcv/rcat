@@ -1,0 +1,4 @@
+[root]
+name = "cargo-hexcat"
+version = "0.1.0"
+
