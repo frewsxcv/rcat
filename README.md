@@ -14,5 +14,5 @@ cargo install hexcat
 $ cat foo.txt
 bar
 $ hexcat foo.txt 
-\x62\x61\x72\xa
+\x62\x61\x72\x0a
 ```

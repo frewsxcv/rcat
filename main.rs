@@ -28,7 +28,14 @@ fn main() {
         };
         let buf_reader = io::BufReader::new(file);
         for byte in buf_reader.bytes() {
-            write!(io::stdout(), "\\x{:x}", byte.unwrap()).expect("could not write to stdout");
+            write!(io::stdout(), "\\x")
+                .expect("could not write to stdout");
+            let mut byte_hex = format!("{:x}", byte.unwrap());
+            if byte_hex.len() == 1 {
+                byte_hex.insert(0, '0');
+            }
+            write!(io::stdout(), "{}", byte_hex)
+                .expect("could not write to stdout");
         }
     }
     write!(io::stdout(), "\n").expect("could not write to stdout");

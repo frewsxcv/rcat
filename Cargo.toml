@@ -1,6 +1,6 @@
 [package]
 name = "hexcat"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Corey Farwell <coreyf@rwell.org>"]
 license = "MIT/Apache-2.0"
 description = "Utility to output a file's contents in Rust's hexadecimal notation."
