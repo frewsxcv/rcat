@@ -1,6 +1,6 @@
 # hexcat
 
-Utility to output a file's contents in Rust's hexidecimal notation.
+Utility to output a file's contents in Rust's hexadecimal notation.
 
 ## Install
 
