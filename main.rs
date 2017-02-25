@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate clap;
+
 use std::{env, error, fs, io, path};
 use std::io::{Read, Write};
 
@@ -20,9 +23,17 @@ fn print_error(error: Box<error::Error>) {
 }
 
 fn main() {
-    let mut args = env::args_os();
-    let name = args.next().expect("failed to retrieve arguments");
-    let iter = args.map(|a| path::PathBuf::from(a));
+    let matches = clap::App::new("hexcat")
+        .version(crate_version!())
+        .about("https://github.com/frewsxcv/hexcat")
+        .arg(clap::Arg::with_name("file")
+            .multiple(true)
+            .required(true))
+        .get_matches();
+
+    let iter = matches.values_of("file")
+        .expect("did not receive file names")
+        .map(|a| path::PathBuf::from(a));
     for path in iter {
         let file = match open_file(&path) {
             Ok(f) => f,

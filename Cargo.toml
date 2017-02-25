@@ -9,3 +9,6 @@ repository = "https://github.com/frewsxcv/hexcat"
 [[bin]]
 name = "hexcat"
 path = "main.rs"
+
+[dependencies]
+clap = "2.20"
