@@ -1,13 +1,22 @@
 use std::{env, error, fs, io, path};
 use std::io::{Read, Write};
 
+fn is_file(path: &path::Path) -> Result<&path::Path, Box<error::Error>> {
+    if path.is_file() {
+        Ok(path)
+    } else {
+        Err("not a file".into())
+    }
+}
+
 fn open_file(path: &path::Path) -> Result<fs::File, Box<error::Error>> {
-    fs::File::open(&path)
-        .map_err(|e| format!("{}: {}", path.to_string_lossy(), e).into())
+    Ok(path)
+        .and_then(is_file)
+        .and_then(|p| fs::File::open(p).map_err(|e| e.into()))
 }
 
 fn print_error(error: Box<error::Error>) {
-    writeln!(io::stderr(), "hexcat: {}", error).expect("could not write to stderr");
+    writeln!(io::stderr(), "hexcat: {}", error.description()).expect("could not write to stderr");
 }
 
 fn main() {
@@ -15,14 +24,6 @@ fn main() {
     let name = args.next().expect("failed to retrieve arguments");
     let iter = args.map(|a| path::PathBuf::from(a));
     for path in iter {
-        if !path.is_file() {
-            writeln!(io::stderr(),
-                     "{}: {}: not a file",
-                     name.to_string_lossy(),
-                     path.to_string_lossy())
-                .expect("could not write to stderr");
-            continue;
-        }
         let file = match open_file(&path) {
             Ok(f) => f,
             Err(e) => {
