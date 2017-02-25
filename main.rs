@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate clap;
 
-use std::{env, error, fs, io, path};
+use std::{error, fs, io, path};
 use std::io::{Read, Write};
 
 fn is_file_at_path(path: &path::Path) -> Result<&path::Path, Box<error::Error>> {
