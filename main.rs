@@ -1,5 +1,14 @@
-use std::{env, fs, io, path};
+use std::{env, error, fs, io, path};
 use std::io::{Read, Write};
+
+fn open_file(path: &path::Path) -> Result<fs::File, Box<error::Error>> {
+    fs::File::open(&path)
+        .map_err(|e| format!("{}: {}", path.to_string_lossy(), e).into())
+}
+
+fn print_error(error: Box<error::Error>) {
+    writeln!(io::stderr(), "hexcat: {}", error).expect("could not write to stderr");
+}
 
 fn main() {
     let mut args = env::args_os();
@@ -14,15 +23,10 @@ fn main() {
                 .expect("could not write to stderr");
             continue;
         }
-        let file = match fs::File::open(&path) {
+        let file = match open_file(&path) {
             Ok(f) => f,
             Err(e) => {
-                writeln!(io::stderr(),
-                         "{}: {}: {}",
-                         name.to_string_lossy(),
-                         path.to_string_lossy(),
-                         e)
-                    .expect("could not write to stderr");
+                print_error(e);
                 continue;
             }
         };
