@@ -22,15 +22,21 @@ fn print_error(error: Box<error::Error>) {
     writeln!(io::stderr(), "hexcat: {}", error.description()).expect("could not write to stderr");
 }
 
+fn print_byte(byte: u8) {
+    write!(io::stdout(), "\\x").expect("could not write to stdout");
+    let mut byte_hex = format!("{:x}", byte);
+    if byte_hex.len() == 1 {
+        byte_hex.insert(0, '0');
+    }
+    write!(io::stdout(), "{}", byte_hex).expect("could not write to stdout");
+}
+
 fn print_file(file: fs::File) {
-    let buf_reader = io::BufReader::new(file);
-    for byte in buf_reader.bytes() {
-        write!(io::stdout(), "\\x").expect("could not write to stdout");
-        let mut byte_hex = format!("{:x}", byte.expect("could not read byte"));
-        if byte_hex.len() == 1 {
-            byte_hex.insert(0, '0');
-        }
-        write!(io::stdout(), "{}", byte_hex).expect("could not write to stdout");
+    for byte in io::BufReader::new(file)
+        .bytes()
+        .map(|b| b.expect("could not read byte from file"))
+    {
+        print_byte(byte)
     }
 }
 
