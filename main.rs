@@ -1,7 +1,7 @@
 use std::{env, error, fs, io, path};
 use std::io::{Read, Write};
 
-fn is_file(path: &path::Path) -> Result<&path::Path, Box<error::Error>> {
+fn is_file_at_path(path: &path::Path) -> Result<&path::Path, Box<error::Error>> {
     if path.is_file() {
         Ok(path)
     } else {
@@ -11,7 +11,7 @@ fn is_file(path: &path::Path) -> Result<&path::Path, Box<error::Error>> {
 
 fn open_file(path: &path::Path) -> Result<fs::File, Box<error::Error>> {
     Ok(path)
-        .and_then(is_file)
+        .and_then(is_file_at_path)
         .and_then(|p| fs::File::open(p).map_err(|e| e.into()))
 }
 
