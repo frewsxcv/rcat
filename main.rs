@@ -12,7 +12,7 @@ fn print_error(error: Box<error::Error>) {
 
 fn main() {
     let mut args = env::args_os();
-    let name = args.next().unwrap();
+    let name = args.next().expect("failed to retrieve arguments");
     let iter = args.map(|a| path::PathBuf::from(a));
     for path in iter {
         if !path.is_file() {
@@ -34,7 +34,7 @@ fn main() {
         for byte in buf_reader.bytes() {
             write!(io::stdout(), "\\x")
                 .expect("could not write to stdout");
-            let mut byte_hex = format!("{:x}", byte.unwrap());
+            let mut byte_hex = format!("{:x}", byte.expect("could not read byte"));
             if byte_hex.len() == 1 {
                 byte_hex.insert(0, '0');
             }
