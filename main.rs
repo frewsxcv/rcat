@@ -42,5 +42,6 @@ fn main() {
                 .expect("could not write to stdout");
         }
     }
+    // TODO: don't print newline if nothing was written
     write!(io::stdout(), "\n").expect("could not write to stdout");
 }
