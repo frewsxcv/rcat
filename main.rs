@@ -45,16 +45,14 @@ fn main() {
 
     let iter = matches.values_of("file")
         .expect("did not receive file names")
-        .map(|a| path::PathBuf::from(a));
-    for path in iter {
-        let file = match open_file(&path) {
-            Ok(f) => f,
-            Err(e) => {
-                print_error(e);
-                continue;
-            }
-        };
-        print_file(file);
+        .map(|a| path::PathBuf::from(a))
+        .map(|p| open_file(&p));
+
+    for result in iter {
+        match result {
+            Ok(f) => print_file(f),
+            Err(e) => print_error(e),
+        }
     }
     // TODO: don't print newline if nothing was written
     write!(io::stdout(), "\n").expect("could not write to stdout");
