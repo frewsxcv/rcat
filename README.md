@@ -12,7 +12,7 @@ cargo install hexcat
 
 ```
 $ cat foo.txt
-bar
+Hello world!
 $ hexcat foo.txt 
-\x62\x61\x72\x0a
+Hello\x20world\x21\x0a
 ```
