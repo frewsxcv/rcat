@@ -8,11 +8,11 @@ Utility to output a file's contents in Rust's hexadecimal notation.
 cargo install hexcat
 ```
 
-## Usage 
+## Usage
 
 ```
 $ cat foo.txt
 Hello world!
-$ hexcat foo.txt 
+$ hexcat foo.txt
 Hello\x20world\x21\x0a
 ```
