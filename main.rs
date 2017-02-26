@@ -22,9 +22,21 @@ fn print_error(error: Box<error::Error>) {
     writeln!(io::stderr(), "hexcat: {}", error.description()).expect("could not write to stderr");
 }
 
+fn is_printable_byte(byte: u8) -> bool {
+    match byte {
+        b'A'...b'Z' => true,
+        b'a'...b'z' => true,
+        b'0'...b'9' => true,
+        _ => false,
+    }
+}
+
 fn print_byte(byte: u8) {
-    write!(io::stdout(), "\\x{0:01$x}", byte, 2)
-        .expect("could not write to stdout");
+    (if is_printable_byte(byte) {
+        write!(io::stdout(), "{}", byte as char)
+    } else {
+        write!(io::stdout(), "\\x{0:01$x}", byte, 2)
+    }).expect("could not write to stdout");
 }
 
 fn print_file(file: fs::File) {
