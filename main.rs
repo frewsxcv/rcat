@@ -23,12 +23,8 @@ fn print_error(error: Box<error::Error>) {
 }
 
 fn print_byte(byte: u8) {
-    write!(io::stdout(), "\\x").expect("could not write to stdout");
-    let mut byte_hex = format!("{:x}", byte);
-    if byte_hex.len() == 1 {
-        byte_hex.insert(0, '0');
-    }
-    write!(io::stdout(), "{}", byte_hex).expect("could not write to stdout");
+    write!(io::stdout(), "\\x{0:01$x}", byte, 2)
+        .expect("could not write to stdout");
 }
 
 fn print_file(file: fs::File) {
