@@ -47,7 +47,8 @@ fn main() {
 
     let iter = matches.values_of("file")
         .expect("did not receive file names")
-        .map(|p| open_file(p.as_ref()));
+        .map(|m| m.as_ref())
+        .map(|p| open_file(p));
 
     for result in iter {
         match result {
