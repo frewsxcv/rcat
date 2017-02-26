@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate clap;
 
-use std::{error, fs, io, path};
+use std::{ascii, error, fs, io, path};
 use std::io::{Read, Write};
 
 fn is_file_at_path(path: &path::Path) -> Result<&path::Path, Box<error::Error>> {
@@ -22,27 +22,17 @@ fn print_error(error: Box<error::Error>) {
     writeln!(io::stderr(), "hexcat: {}", error.description()).expect("could not write to stderr");
 }
 
-fn is_printable_byte(byte: u8) -> bool {
-    match byte {
-        b'A'...b'Z' => true,
-        b'a'...b'z' => true,
-        b'0'...b'9' => true,
-        _ => false,
+fn print_byte(byte: u8) {
+    for char_ in ascii::escape_default(byte).map(|b| b as char) {
+        write!(io::stdout(), "{}", char_)
+            .expect("could not write to stdout")
     }
 }
 
-fn print_byte(byte: u8) {
-    (if is_printable_byte(byte) {
-        write!(io::stdout(), "{}", byte as char)
-    } else {
-        write!(io::stdout(), "\\x{0:01$x}", byte, 2)
-    }).expect("could not write to stdout");
-}
-
-fn print_file(file: fs::File) {
-    for byte in io::BufReader::new(file)
+fn print_bytes_from_reader<R: Read>(reader: R) {
+    for byte in io::BufReader::new(reader)
         .bytes()
-        .map(|b| b.expect("could not read byte from file"))
+        .map(|b| b.expect("could not read byte from reader"))
     {
         print_byte(byte)
     }
@@ -53,18 +43,28 @@ fn main() {
         .version(crate_version!())
         .about("https://github.com/frewsxcv/hexcat")
         .arg(clap::Arg::with_name("file")
-            .multiple(true)
-            .required(true))
+            .multiple(true))
         .get_matches();
 
-    let iter = matches.values_of("file")
-        .expect("did not receive file names")
+    // https://github.com/kbknapp/clap-rs/pull/877
+
+    let file_values = matches.values_of("file");
+
+    let file_values = match file_values {
+        Some(f) => f,
+        None => {
+            print_bytes_from_reader(io::stdin());
+            return;
+        },
+    };
+
+    let iter = file_values
         .map(|m| m.as_ref())
         .map(|p| open_file(p));
 
     for result in iter {
         match result {
-            Ok(f) => print_file(f),
+            Ok(f) => print_bytes_from_reader(f),
             Err(e) => print_error(e),
         }
     }
