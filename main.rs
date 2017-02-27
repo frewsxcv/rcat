@@ -4,17 +4,13 @@ extern crate clap;
 use std::{ascii, error, fs, io, path};
 use std::io::{Read, Write};
 
-fn is_file_at_path(path: &path::Path) -> Result<&path::Path, Box<error::Error>> {
-    if path.is_file() {
-        Ok(path)
-    } else {
-        Err("not a file".into())
-    }
-}
-
 fn open_file(path: &path::Path) -> Result<fs::File, Box<error::Error>> {
     Ok(path)
-        .and_then(is_file_at_path)
+        .and_then(|path| if path.is_file () {
+            Ok(path)
+        } else {
+            Err("not a file".into())
+        })
         .and_then(|p| fs::File::open(p).map_err(|e| e.into()))
 }
 
