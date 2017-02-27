@@ -47,8 +47,6 @@ fn main() {
         .arg(clap::Arg::with_name("file").multiple(true))
         .get_matches();
 
-    // https://github.com/kbknapp/clap-rs/pull/877
-
     let file_values = matches.values_of("file");
 
     let mut stdout = io::BufWriter::new(io::stdout());
