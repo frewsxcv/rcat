@@ -47,11 +47,9 @@ fn main() {
         .arg(clap::Arg::with_name("file").multiple(true))
         .get_matches();
 
-    let file_values = matches.values_of("file");
-
     let mut stdout = io::BufWriter::new(io::stdout());
 
-    let file_values = match file_values {
+    let file_values = match matches.values_of("file") {
         Some(f) => f,
         None => {
             let was_byte_printed = print_bytes_from_reader(io::stdin(), &mut stdout);
