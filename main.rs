@@ -4,6 +4,9 @@ extern crate clap;
 use std::{ascii, error, fs, io, path};
 use std::io::{Read, Write};
 
+static PROGRAM_NAME: &'static str = "hexcat";
+static REPO_URL: &'static str = "https://github.com/frewsxcv/hexcat";
+
 fn open_file(path: &path::Path) -> Result<fs::File, Box<error::Error>> {
     Ok(path)
         .and_then(|path| if path.is_file() {
@@ -15,7 +18,8 @@ fn open_file(path: &path::Path) -> Result<fs::File, Box<error::Error>> {
 }
 
 fn print_error(error: Box<error::Error>) {
-    writeln!(io::stderr(), "hexcat: {}", error.description()).expect("could not write to stderr");
+    writeln!(io::stderr(), "{}: {}", PROGRAM_NAME, error.description())
+        .expect("could not write to stderr");
 }
 
 fn print_byte<W: Write>(byte: u8, writer: &mut W) {
@@ -37,9 +41,9 @@ fn print_bytes_from_reader<R: Read, W: Write>(reader: R, writer: &mut W) -> bool
 }
 
 fn main() {
-    let matches = clap::App::new("hexcat")
+    let matches = clap::App::new(PROGRAM_NAME)
         .version(crate_version!())
-        .about("https://github.com/frewsxcv/hexcat")
+        .about(REPO_URL)
         .arg(clap::Arg::with_name("file").multiple(true))
         .get_matches();
 
