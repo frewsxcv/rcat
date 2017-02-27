@@ -45,15 +45,28 @@ fn main() {
         .version(crate_version!())
         .about(REPO_URL)
         .arg(clap::Arg::with_name("file").multiple(true))
+        .arg(clap::Arg::with_name("quoted")
+            .long("quoted")
+            .help("Quote output with Rust's byte string literal syntax")
+        )
         .get_matches();
 
     let mut stdout = io::BufWriter::new(io::stdout());
+
+    let should_quote = matches.values_of("quoted").is_some();
+
+    if should_quote {
+        stdout.write_all(&[b'b', b'"']).expect("could not write to stdout");
+    }
 
     let file_values = match matches.values_of("file") {
         Some(f) => f,
         None => {
             let was_byte_printed = print_bytes_from_reader(io::stdin(), &mut stdout);
-            if was_byte_printed {
+            if should_quote {
+                stdout.write_all(&[b'"']).expect("could not write to stdout");
+            }
+            if was_byte_printed || should_quote {
                 stdout.write_all(&[b'\n']).expect("could not write to stdout");
             }
             return;
@@ -70,7 +83,10 @@ fn main() {
             Err(e) => print_error(e),
         }
     }
-    if was_byte_printed {
+    if should_quote {
+        stdout.write_all(&[b'"']).expect("could not write to stdout");
+    }
+    if was_byte_printed || should_quote {
         stdout.write_all(&[b'\n']).expect("could not write to stdout");
     }
 
