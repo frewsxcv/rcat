@@ -12,7 +12,9 @@ cargo install rcat
 
 ```
 $ cat foo.txt
-Hello world!
+Hello world! 👋🌎
 $ rcat foo.txt
-Hello\x20world\x21\x0a
+Hello world! \xf0\x9f\x91\x8b\xf0\x9f\x8c\x8e\n
+$ rcat --quoted foo.txt
+b"Hello world! \xf0\x9f\x91\x8b\xf0\x9f\x8c\x8e\n"
 ```
