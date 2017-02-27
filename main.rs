@@ -6,7 +6,7 @@ use std::io::{Read, Write};
 
 fn open_file(path: &path::Path) -> Result<fs::File, Box<error::Error>> {
     Ok(path)
-        .and_then(|path| if path.is_file () {
+        .and_then(|path| if path.is_file() {
             Ok(path)
         } else {
             Err("not a file".into())
@@ -24,12 +24,16 @@ fn print_byte<W: Write>(byte: u8, writer: &mut W) {
     }
 }
 
-fn print_bytes_from_reader<R: Read, W: Write>(reader: R, writer: &mut W) {
+/// Return if at least one byte was printed
+fn print_bytes_from_reader<R: Read, W: Write>(reader: R, writer: &mut W) -> bool {
+    let mut was_byte_printed = false;
     for byte in io::BufReader::new(reader)
         .bytes()
         .map(|b| b.expect("could not read byte from reader")) {
+        was_byte_printed = true;
         print_byte(byte, writer)
     }
+    was_byte_printed
 }
 
 fn main() {
@@ -48,7 +52,10 @@ fn main() {
     let file_values = match file_values {
         Some(f) => f,
         None => {
-            print_bytes_from_reader(io::stdin(), &mut stdout);
+            let was_byte_printed = print_bytes_from_reader(io::stdin(), &mut stdout);
+            if was_byte_printed {
+                stdout.write_all(&[b'\n']).expect("could not write to stdout");
+            }
             return;
         }
     };
@@ -56,14 +63,16 @@ fn main() {
     let iter = file_values.map(|m| m.as_ref())
         .map(|p| open_file(p));
 
+    let mut was_byte_printed = false;
     for result in iter {
         match result {
-            Ok(f) => print_bytes_from_reader(f, &mut stdout),
+            Ok(f) => was_byte_printed |= print_bytes_from_reader(f, &mut stdout),
             Err(e) => print_error(e),
         }
     }
-    // TODO: don't print newline if nothing was written
-    stdout.write_all(&[b'\n']).expect("could not write to stdout");
+    if was_byte_printed {
+        stdout.write_all(&[b'\n']).expect("could not write to stdout");
+    }
 
     // TODO: return failing status code if error
 }
