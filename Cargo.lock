@@ -1,6 +1,6 @@
 [root]
-name = "hexcat"
-version = "1.0.1"
+name = "rcat"
+version = "2.0.0"
 dependencies = [
  "clap 2.20.5 (registry+https://github.com/rust-lang/crates.io-index)",
 ]

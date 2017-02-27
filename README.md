@@ -1,11 +1,11 @@
-# hexcat
+# rcat
 
-Utility to output a file's contents in Rust's hexadecimal notation.
+Utility to output file contents using Rust's byte slice notation.
 
 ## Install
 
 ```
-cargo install hexcat
+cargo install rcat
 ```
 
 ## Usage
@@ -13,6 +13,6 @@ cargo install hexcat
 ```
 $ cat foo.txt
 Hello world!
-$ hexcat foo.txt
+$ rcat foo.txt
 Hello\x20world\x21\x0a
 ```

@@ -4,8 +4,8 @@ extern crate clap;
 use std::{ascii, error, fs, io, path};
 use std::io::{Read, Write};
 
-static PROGRAM_NAME: &'static str = "hexcat";
-static REPO_URL: &'static str = "https://github.com/frewsxcv/hexcat";
+static PROGRAM_NAME: &'static str = "rcat";
+static REPO_URL: &'static str = "https://github.com/frewsxcv/rcat";
 
 fn open_file(path: &path::Path) -> Result<fs::File, Box<error::Error>> {
     Ok(path)
