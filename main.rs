@@ -31,8 +31,7 @@ fn print_byte<W: Write>(byte: u8, writer: &mut W) {
 fn print_bytes_from_reader<R: Read, W: Write>(reader: R, writer: &mut W) {
     for byte in io::BufReader::new(reader)
         .bytes()
-        .map(|b| b.expect("could not read byte from reader"))
-    {
+        .map(|b| b.expect("could not read byte from reader")) {
         print_byte(byte, writer)
     }
 }
@@ -41,8 +40,7 @@ fn main() {
     let matches = clap::App::new("hexcat")
         .version(crate_version!())
         .about("https://github.com/frewsxcv/hexcat")
-        .arg(clap::Arg::with_name("file")
-            .multiple(true))
+        .arg(clap::Arg::with_name("file").multiple(true))
         .get_matches();
 
     // https://github.com/kbknapp/clap-rs/pull/877
@@ -56,11 +54,10 @@ fn main() {
         None => {
             print_bytes_from_reader(io::stdin(), &mut stdout);
             return;
-        },
+        }
     };
 
-    let iter = file_values
-        .map(|m| m.as_ref())
+    let iter = file_values.map(|m| m.as_ref())
         .map(|p| open_file(p));
 
     for result in iter {
