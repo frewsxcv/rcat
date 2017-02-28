@@ -40,12 +40,15 @@ fn print_bytes_from_reader<R: Read, W: Write>(reader: R, writer: &mut W) -> bool
     was_byte_printed
 }
 
+static FILES_ARG_NAME: &'static str = "file";
+static QUOTE_ARG_NAME: &'static str = "quote";
+
 fn main() {
     let matches = clap::App::new(PROGRAM_NAME)
         .version(crate_version!())
         .about(REPO_URL)
-        .arg(clap::Arg::with_name("file").multiple(true))
-        .arg(clap::Arg::with_name("quote")
+        .arg(clap::Arg::with_name(FILES_ARG_NAME).multiple(true))
+        .arg(clap::Arg::with_name(QUOTE_ARG_NAME)
             .long("quote")
             .help("Quote output using Rust's byte slice literal syntax")
         )
@@ -53,13 +56,13 @@ fn main() {
 
     let mut stdout = io::BufWriter::new(io::stdout());
 
-    let should_quote = matches.values_of("quote").is_some();
+    let should_quote = matches.values_of(QUOTE_ARG_NAME).is_some();
 
     if should_quote {
         stdout.write_all(&[b'b', b'"']).expect("could not write to stdout");
     }
 
-    let file_values = match matches.values_of("file") {
+    let file_values = match matches.values_of(FILES_ARG_NAME) {
         Some(f) => f,
         None => {
             let was_byte_printed = print_bytes_from_reader(io::stdin(), &mut stdout);
