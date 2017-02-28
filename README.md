@@ -1,6 +1,6 @@
 # rcat
 
-Utility to output file contents using Rust's byte slice notation.
+Concatenate and print files in a Rust byte slice compatible format.
 
 ## Install
 

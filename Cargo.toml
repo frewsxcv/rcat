@@ -3,7 +3,7 @@ name = "rcat"
 version = "2.0.0"
 authors = ["Corey Farwell <coreyf@rwell.org>"]
 license = "MIT/Apache-2.0"
-description = "Utility to output file contents using Rust's byte slice notation."
+description = "Concatenate and print files in a Rust byte slice compatible format."
 repository = "https://github.com/frewsxcv/rcat"
 
 [[bin]]
