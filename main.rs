@@ -45,8 +45,8 @@ fn main() {
         .version(crate_version!())
         .about(REPO_URL)
         .arg(clap::Arg::with_name("file").multiple(true))
-        .arg(clap::Arg::with_name("quoted")
-            .long("quoted")
+        .arg(clap::Arg::with_name("quote")
+            .long("quote")
             .help("Quote output with Rust's byte string literal syntax")
         )
         .get_matches();
