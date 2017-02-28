@@ -47,7 +47,7 @@ fn main() {
         .arg(clap::Arg::with_name("file").multiple(true))
         .arg(clap::Arg::with_name("quote")
             .long("quote")
-            .help("Quote output with Rust's byte string literal syntax")
+            .help("Quote output using Rust's byte slice literal syntax")
         )
         .get_matches();
 
