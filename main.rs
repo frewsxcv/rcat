@@ -53,7 +53,7 @@ fn main() {
 
     let mut stdout = io::BufWriter::new(io::stdout());
 
-    let should_quote = matches.values_of("quoted").is_some();
+    let should_quote = matches.values_of("quote").is_some();
 
     if should_quote {
         stdout.write_all(&[b'b', b'"']).expect("could not write to stdout");
