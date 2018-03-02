@@ -1,6 +1,6 @@
 [package]
 name = "rcat"
-version = "2.0.3"
+version = "2.0.4"
 authors = ["Corey Farwell <coreyf@rwell.org>"]
 license = "MIT/Apache-2.0"
 description = "Concatenate and print files in a Rust byte slice compatible format."
