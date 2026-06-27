@@ -1,3 +1,5 @@
+**⚠️ This repository has moved to <https://tangled.org/rwell.org/rcat> ⚠️**
+
 # rcat
 
 Concatenate and print files in a Rust byte slice compatible format.
