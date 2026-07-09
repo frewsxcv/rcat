@@ -11,4 +11,4 @@ name = "rcat"
 path = "main.rs"
 
 [dependencies]
-clap = "2.33"
+clap = "4.1"
